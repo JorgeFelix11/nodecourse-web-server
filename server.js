@@ -2,9 +2,11 @@ const express = require("express");
 const hbs = require('hbs');
 const fs = require('fs');
 
+const port = process.env.PORT || 3000;
+
 let app = express();
 
-const port = 3000;
+
 
 app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partials');
@@ -22,6 +24,12 @@ app.use((req, res, next) => {
     })
     next()
 })
+
+// app.use((req, res, next) => {
+//     res.render('maintenance.hbs')
+// })
+app.use(express.static(__dirname + '/public'));
+
 app.get('/', (req, res) => {
     // res.send('<h1>Hello Express</h1>')
     // res.send({
@@ -36,12 +44,6 @@ app.get('/', (req, res) => {
         welcomeMessage: 'Welcome to the home page'
     })
 })
-app.use((req, res, next) => {
-    res.render('maintenance.hbs')
-})
-app.use(express.static(__dirname + '/public'));
-
-
 app.get('/about', (req, res) => {
     res.render('about.hbs', {
         pageTitle: 'About Page',
